@@ -7,6 +7,15 @@
       },
       "baseFarmSkuName": {
           "value": "#arm_baseFarmSkuName#"
+      },
+      "resources": {
+          "value": "#arm_baseFarmName#" 
+      },
+      "sqlserverappAdminLogin": {
+          "value": "#arm_baseloginuser#" 
+      },
+      "sqlserverappAdminLoginPassword": {
+          "value": "#arm_password#" 
       }
   }
 }

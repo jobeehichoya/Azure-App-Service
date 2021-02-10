@@ -26,42 +26,80 @@
       "metadata": {
         "description": "Describes plan's pricing tier and capacity. Check details at https://azure.microsoft.com/en-us/pricing/details/app-service/"
       }
-    }},
-  "variables": {},
-  "resources": [
-    {
-      "name": "[parameters('baseFarmName')]",
-      "type": "Microsoft.Web/serverfarms",
-      "location": "[resourceGroup().location]",
-      "apiVersion": "2015-08-01",
-      "sku": {
-        "name": "[parameters('baseFarmSkuName')]"
-      },
-      "dependsOn": [],
-      "tags": {
-        "displayName": "baseFarm"
-      },
-      "properties": {
-        "name": "[parameters('baseFarmName')]",
-        "numberOfWorkers": 1
-      }
     },
-    {
-      "name": "[parameters('baseFarmName')]",
-      "type": "Microsoft.Web/sites",
-      "location": "[resourceGroup().location]",
-      "apiVersion": "2015-08-01",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms', parameters('baseFarmName'))]"
-      ],
-      "tags": {
-        "[concat('hidden-related:', resourceId('Microsoft.Web/serverfarms', parameters('baseFarmName')))]": "Resource",
-        "displayName": "baseApp"
-      },
-      "properties": {
+
+    "resources": [
+      {
         "name": "[parameters('baseFarmName')]",
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('baseFarmName'))]"
+        "type": "Microsoft.Web/serverfarms",
+        "location": "[resourceGroup().location]",
+        "apiVersion": "2015-08-01",
+        "sku": {
+          "name": "[parameters('baseFarmSkuName')]"
+        },
+        "dependsOn": [],
+        "tags": {
+          "displayName": "baseFarm"
+        },
+        "properties": {
+          "name": "[parameters('baseFarmName')]",
+          "numberOfWorkers": 1
+        }
+      },
+      {
+        "name": "[parameters('baseFarmName')]",
+        "type": "Microsoft.Web/sites",
+        "location": "[resourceGroup().location]",
+        "apiVersion": "2015-08-01",
+        "dependsOn": [
+          "[resourceId('Microsoft.Web/serverfarms', parameters('baseFarmName'))]"
+        ],
+        "tags": {
+          "[concat('hidden-related:', resourceId('Microsoft.Web/serverfarms', parameters('baseFarmName')))]": "Resource",
+          "displayName": "baseApp"
+        },
+        "properties": {
+          "name": "[parameters('baseFarmName')]",
+          "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('baseFarmName'))]"
+        }
+      },
+      {
+        "name": "[parameters('baseFarmName')]",
+        "type": "Microsoft.Sql/servers",
+        "location": "[resourceGroup().location]",
+        "apiVersion": "2014-04-01-preview",
+        "dependsOn": [],
+        "tags": {
+          "displayName": "sqlserverapp"
+        },
+        "properties": {
+          "administratorLogin": "[parameters('sqlserverappAdminLogin')]",
+          "administratorLoginPassword": "[parameters('sqlserverappAdminLoginPassword')]"
+        },
+        "resources": [
+          {
+            "name": "AllowAllWindowsAzureIps",
+            "type": "firewallrules",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2014-04-01-preview",
+            "dependsOn": [
+              "[resourceId('Microsoft.Sql/servers', parameters('baseFarmName'))]"
+            ],
+            "properties": {
+              "startIpAddress": "0.0.0.0",
+              "endIpAddress": "0.0.0.0"
+            }
+          }
+        ]
       }
-    }],
-  "outputs": {}
+    ],
+    "sqlserverappAdminLogin": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sqlserverappAdminLoginPassword": {
+      "type": "securestring"
+    }
+
+  }
 }
