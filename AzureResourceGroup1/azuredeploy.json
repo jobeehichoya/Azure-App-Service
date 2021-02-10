@@ -33,6 +33,40 @@
       "metadata": {
         "description": "Describes plan's pricing tier and capacity. Check details at https://azure.microsoft.com/en-us/pricing/details/app-service/"
       }
+    },
+    "dtabasejName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dtabasejCollation": {
+      "type": "string",
+      "minLength": 1,
+      "defaultValue": "SQL_Latin1_General_CP1_CI_AS"
+    },
+    "dtabasejEdition": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "allowedValues": [
+        "Basic",
+        "Standard",
+        "Premium"
+      ]
+    },
+    "dtabasejRequestedServiceObjectiveName": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "allowedValues": [
+        "Basic",
+        "S0",
+        "S1",
+        "S2",
+        "P1",
+        "P2",
+        "P3"
+      ],
+      "metadata": {
+        "description": "Describes the performance level for Edition"
+      }
     }
     },
 
@@ -96,6 +130,24 @@
             "properties": {
               "startIpAddress": "0.0.0.0",
               "endIpAddress": "0.0.0.0"
+            }
+          },
+          {
+            "name": "[parameters('dtabasejName')]",
+            "type": "databases",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2014-04-01-preview",
+            "dependsOn": [
+              "[resourceId('Microsoft.Sql/servers', parameters('baseFarmName'))]"
+            ],
+            "tags": {
+              "displayName": "dtabasej"
+            },
+            "properties": {
+              "collation": "[parameters('dtabasejCollation')]",
+              "edition": "[parameters('dtabasejEdition')]",
+              "maxSizeBytes": "1073741824",
+              "requestedServiceObjectiveName": "[parameters('dtabasejRequestedServiceObjectiveName')]"
             }
           }
         ]
