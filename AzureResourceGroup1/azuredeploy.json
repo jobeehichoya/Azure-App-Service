@@ -6,6 +6,13 @@
       "type": "string",
       "minLength": 1
     },
+     "sqlserverappAdminLogin": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sqlserverappAdminLoginPassword": {
+      "type": "securestring"
+    },
     "baseFarmSkuName": {
       "type": "string",
       "defaultValue": "F1",
@@ -26,6 +33,7 @@
       "metadata": {
         "description": "Describes plan's pricing tier and capacity. Check details at https://azure.microsoft.com/en-us/pricing/details/app-service/"
       }
+    }
     },
 
     "resources": [
@@ -92,14 +100,5 @@
           }
         ]
       }
-    ],
-    "sqlserverappAdminLogin": {
-      "type": "string",
-      "minLength": 1
-    },
-    "sqlserverappAdminLoginPassword": {
-      "type": "securestring"
-    }
-
+    ]
   }
-}
