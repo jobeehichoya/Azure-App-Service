@@ -13,6 +13,9 @@
         },
         "sqlserverappAdminLoginPassword": {
             "value": "#arm_password#"
+        },
+        "dtabasejName": {
+            "value": "tesinggbyjobe" 
         }
     }
 }
